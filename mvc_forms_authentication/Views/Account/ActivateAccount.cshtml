@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "ActivateAccount";
+}
+
+<h2>ActivateAccount</h2>
+<div class="container">
+    <div class="row">
+
+        @if (ViewBag.IsAlreadyVerified)
+        {
+            <div class="alert-success">
+                Your email address @ViewBag.Email has already been successfully activated.
+            </div>
+        }
+        else
+        {
+            <div class="alert-success">
+                Your email address @ViewBag.Email has been successfully activated.
+            </div>
+        }
+
+    </div>
+</div>

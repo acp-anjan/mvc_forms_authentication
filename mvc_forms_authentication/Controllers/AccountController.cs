@@ -74,5 +74,33 @@ namespace mvc_forms_authentication.Controllers
             bool isEmailExists = dbContext.Users.Any(m => m.Email == userEmail);
             return Json(!isEmailExists, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Login()
+        {
+            var loginModel = new LoginViewModel();
+            return View(loginModel);
+        }
+
+        public ActionResult ActivateAccount(string VerificationCode)
+        {
+            var userObj = dbContext.Users.Single(m => m.VerificationCode == VerificationCode);
+            ViewBag.Email = userObj.Email;
+
+            if (userObj.IsVerified)
+            {
+                ViewBag.IsAlreadyVerified = true;
+                return View();
+            }
+
+            userObj.IsVerified = true;
+
+            var role = new UserRole();
+            role.RoleId = 1;
+            role.UserId = userObj.UserId;
+            dbContext.UserRoles.Add(role);
+            dbContext.SaveChanges();
+
+            return View();
+        }
     }
 }
